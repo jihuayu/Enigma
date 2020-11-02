@@ -26,8 +26,7 @@ subprojects {
     group = 'cuchaz'
     version = '0.21.5'
 
-    def buildNumber = System.getenv("BUILD_NUMBER")
-    version = version + "+" + (buildNumber ? "build.$buildNumber" : "local")
+    version = version
 
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
@@ -53,15 +52,11 @@ subprojects {
 allprojects {
     publishing {
         repositories {
-            mavenLocal()
-
-            if (project.hasProperty('mavenPass')) {
-                maven {
-                    url = "http://mavenupload.modmuss50.me/"
-                    credentials {
-                        username = "buildslave"
-                        password = project.getProperty('mavenPass')
-                    }
+            maven {
+                url = "https://maven2.jihuayu.site/releases"
+                credentials {
+                    username = System.getenv('MAVEN_ADMIN_NAME')
+                    password = System.getenv('MAVEN_ADMIN_TOKEN')
                 }
             }
         }

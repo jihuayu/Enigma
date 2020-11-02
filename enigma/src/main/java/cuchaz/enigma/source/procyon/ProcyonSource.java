@@ -9,6 +9,7 @@ import cuchaz.enigma.source.SourceIndex;
 import cuchaz.enigma.source.procyon.index.SourceIndexVisitor;
 import cuchaz.enigma.source.procyon.transformers.AddJavadocsAstTransform;
 import cuchaz.enigma.translation.mapping.EntryRemapper;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.StringWriter;
 
@@ -34,9 +35,8 @@ public class ProcyonSource implements Source {
         if (string == null) {
             StringWriter writer = new StringWriter();
             tree.acceptVisitor(new JavaOutputVisitor(new PlainTextOutput(writer), settings), null);
-            string = writer.toString();
+            string = StringEscapeUtils.unescapeJava(writer.toString());
         }
-
         return string;
     }
 
